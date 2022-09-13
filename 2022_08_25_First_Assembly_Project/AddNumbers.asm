@@ -2,8 +2,8 @@ INCLUDE Irvine32.inc
 
 .data
 num1	WORD	1h
-num2	word	2h
-sum		word	?
+num2	WORD	2h
+sum		WORD	?
 
 .code
 main	PROC

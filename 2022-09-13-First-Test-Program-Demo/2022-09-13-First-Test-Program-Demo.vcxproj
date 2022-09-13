@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{a69243d7-9b05-44ee-8031-60cda660ec1f}</ProjectGuid>
-    <RootNamespace>My20220825FirstAssemblyProject</RootNamespace>
+    <ProjectGuid>{6fc25443-fc59-4fe3-b736-379629be7e89}</ProjectGuid>
+    <RootNamespace>My20220913FirstTestProgramDemo</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -81,12 +81,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>c:\Irvine;%(AdditionalDependencies)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>user32.lib;Irvine32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <MASM>
-      <IncludePaths>c:\Irvine;%(IncludePaths)</IncludePaths>
-    </MASM>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -133,7 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <MASM Include="AddNumbers.asm" />
     <MASM Include="Test-File-2022-09-13-Class-Session.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

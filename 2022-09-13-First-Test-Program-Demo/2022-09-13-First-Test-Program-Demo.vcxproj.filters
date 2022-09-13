@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="AddNumbers.asm">
-      <Filter>Source Files</Filter>
-    </MASM>
     <MASM Include="Test-File-2022-09-13-Class-Session.asm">
       <Filter>Source Files</Filter>
     </MASM>
