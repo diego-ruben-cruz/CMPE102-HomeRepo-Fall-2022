@@ -1,9 +1,0 @@
-﻿  Assembling Test-File-2022-09-13-Class-Session.asm...
-Test-File-2022-09-13-Class-Session.asm(7): error A2008: syntax error : .
-Test-File-2022-09-13-Class-Session.asm(8): error A2008: syntax error : .
-Test-File-2022-09-13-Class-Session.asm(9): error A2008: syntax error : .
-Test-File-2022-09-13-Class-Session.asm(11): error A2008: syntax error : ,
-Test-File-2022-09-13-Class-Session.asm(26): error A2008: syntax error : INVOKE
-Test-File-2022-09-13-Class-Session.asm(28): error A2008: syntax error : main
-Test-File-2022-09-13-Class-Session.asm(28): error A2088: END directive required at end of file
-C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\BuildCustomizations\masm.targets(70,5): error MSB3721: The command "ml64.exe /c /nologo /Zi /Fo"x64\Debug\Test-File-2022-09-13-Class-Session.obj" /W3 /errorReport:prompt  /Ta"Test-File-2022-09-13-Class-Session.asm"" exited with code 1.
