@@ -1,34 +1,32 @@
 ;for file header on top of the file
-COMMENT! 
+COMMENT ! 
 Description:
 Name:
 Project:
 Date:
 !
 
-.386 ; to indicate 32 bit program
+;INCLUDE Irvine32.inc ; Use Irvine32
 
-.model flat stdcall; ; assuming not including irvine library. If u include then ignore the red highlighted lines
+.386 ; to indicate 32 bit program, comment out if you are using Irvine32
+
+.model flat stdcall; ; comment out if you are using Irvine32
 ;flat = protected mode
 ;stdcall vs ccall?! convention
 ;MODEL
 
 
-.stack 4096 ;define stack size for all apps. This is big enough ; SIZE ; 4096 bytes?
+.stack 4096 ;define stack size for all apps. This is big enough ; SIZE ; 4096 bytes? Comment out if using Irvine32
 
-ExitProcess PROTO, dwExitCode : dword  ; PROTOTYPE
+ExitProcess PROTO, dwExitCode : dword  ; PROTOTYPE, comment out if you are using Irvine32
 ; ExitProcess PROTO = fn/procedure prototype to transfer/return execution to windows services
 ; otherwise, windows can’t run any execution & windows crashes
 ; dwExitCode is parameter
 ; dword = data type
 
-.data
-; below declare data label
+.data; below declare data label
 
-.code
-; to include assembly statement inside
-
-; NEED TO FOLLOW THIS FOR 1ST PROJECT
+.code; to include assembly statement inside
 
 main PROC
 
@@ -37,6 +35,3 @@ main PROC
 ; 0 = param to pass
 main ENDP
 End main
-
-; for practice exercise:
-;Define 2 #s, initialize them to 0, 10 or 20
