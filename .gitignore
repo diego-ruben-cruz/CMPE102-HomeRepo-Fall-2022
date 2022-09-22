@@ -10,3 +10,13 @@
 *.filters
 *.user
 2022-09-20-Project-Assignment-1/.vs/2022-09-20-Project-Assignment-1/v17/.suo
+*.tlog
+*.exe
+*.recipe
+*.ilk
+*.log
+*.pdb
+*.txt
+*.obj
+2022-08-25-First-ASM-Project/Debug/_IsIncrementalBuild
+2022-08-25-First-ASM-Project/.vs/2022-08-25-First-ASM-Project/v17/.suo
