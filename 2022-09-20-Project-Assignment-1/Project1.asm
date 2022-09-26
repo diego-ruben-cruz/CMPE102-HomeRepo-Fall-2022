@@ -39,8 +39,30 @@ DWORD total
 
 .code; to include assembly statement inside
 main PROC
+	; Doing operation to add all array elements to each num variable
+	
 
-
+	; Commencing operation to compute num1 + num2
+	mov eax, 0h; initialize eax with 0
+	mov ax, num1; initialize ax with num1
+	add ax, num2; adding num1 + num2
+	
+	; Commencing operation to computer num3 + num4
+	mov ebx, 0h; initialize ebx with 0
+	mov bx, num3; initialize bx with num3
+	add bx, num4; adding num3 + num4
+	
+	; Commencing operation to compute (num3 + num4) - (num1 + num2)
+	mov esi 0h; initialize esi with 0
+	mov esi, bx; initialize esi with (num3 + num4)
+	sub esi, ax; subtract esi with (num1 + num2)
+	
+	; Increment esi register by 1
+	inc esi
+	
+	; Store esi result to total data label
+	mov label, esi
+	
 	invoke ExitProcess, 0 ; to return execution to windows services otherwise prog crashes
 ; 0 = param to pass
 main ENDP
