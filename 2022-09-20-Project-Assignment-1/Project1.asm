@@ -40,7 +40,25 @@ DWORD total
 .code; to include assembly statement inside
 main PROC
 	; Doing operation to add all array elements to each num variable
+	mov eax, 0h,; initialize eax with 0
+	mov ax, num1; initialize ax with num1 before addition
+	add ax, arrayB1; add array element 1
+	mov num1, ax; num1 has now added element 1 of the array
 	
+	mov eax, 0h,; initialize eax with 0
+	mov ax, num2; initialize ax with num2 before addition
+	add ax, [arrayB1 +1]; add array element 2
+	mov num2, ax; num1 has now added element 2 of the array
+	
+	mov eax, 0h,; initialize eax with 0
+	mov ax, num3; initialize ax with num3 before addition
+	add ax, [arrayB1 +2]; add array element 3
+	mov num3, ax; num1 has now added element 3 of the array
+	
+	mov eax, 0h,; initialize eax with 0
+	mov ax, num4; initialize ax with num4 before addition
+	add ax, [arrayB1 +3]; add array element 4
+	mov num4, ax; num1 has now added element 4 of the array	
 
 	; Commencing operation to compute num1 + num2
 	mov eax, 0h; initialize eax with 0
@@ -63,7 +81,10 @@ main PROC
 	; Store esi result to total data label
 	mov label, esi
 	
-	invoke ExitProcess, 0 ; to return execution to windows services otherwise prog crashes
-; 0 = param to pass
+	invoke ExitProcess, 0 	COMMENT ! 
+							to return execution to windows services 
+							otherwise prog crashes
+							0 = param to pass
+							!
 main ENDP
 End main
