@@ -42,14 +42,14 @@ total WORD ? ; ? char denotes that total is yet to be defined.
 .code; to include assembly statement inside
 main PROC
 	; Doing operation to add all array elements to each num variable
-	mov eax, 0h; initialize eax with 0
-	mov ax, num1; initialize ax with num1 before addition
-	add ax, [arrayB1]; add array element 1
-	mov num1, ax; num1 has now added element 1 of the array
+	MOV eax, 0h; initialize eax with 0
+	MOV ax, num1; initialize ax with num1 before addition
+	ADD ax, [arrayB1]; add array element 1
+	MOV num1, ax; num1 has now added element 1 of the array
 	
-	mov eax, 0h; initialize eax with 0
-	mov ax, num2; initialize ax with num2 before addition
-	add ax, [arrayB1+2] 
+	MOV eax, 0h; initialize eax with 0
+	MOV ax, num2; initialize ax with num2 before addition
+	ADD ax, [arrayB1+2] 
 						COMMENT @
 						add array element 2, 
 						the +2 denotes going further 2 bytes
@@ -57,43 +57,43 @@ main PROC
 						This then navigates to the next element of the
 						array.
 						@
-	;add ax, [arrayB1+WORD]; This is also acceptable for previous instruction
-	mov num2, ax; num2 has now added element 2 of the array
+	;ADD ax, [arrayB1+WORD]; This is also acceptable for previous instruction
+	MOV num2, ax; num2 has now added element 2 of the array
 	
-	mov eax, 0h; initialize eax with 0
-	mov ax, num3; initialize ax with num3 before addition
-	add ax, [arrayB1+ 4]; add array element 3
-	;add ax, [arrayB1+ 2*WORD]; This is also acceptable for previous instruction
-	mov num3, ax; num3 has now added element 3 of the array
+	MOV eax, 0h; initialize eax with 0
+	MOV ax, num3; initialize ax with num3 before addition
+	ADD ax, [arrayB1+ 4]; add array element 3
+	;ADD ax, [arrayB1+ 2*WORD]; This is also acceptable for previous instruction
+	MOV num3, ax; num3 has now added element 3 of the array
 	
-	mov eax, 0h; initialize eax with 0
-	mov ax, num4; initialize ax with num4 before addition
-	add ax, [arrayB1+6]; add array element 4
-	;add ax, [arrayB1+ 3*WORD]; This is also acceptable for previous instruction
-	mov num4, ax; num4 has now added element 4 of the array
+	MOV eax, 0h; initialize eax with 0
+	MOV ax, num4; initialize ax with num4 before addition
+	ADD ax, [arrayB1+6]; add array element 4
+	;ADD ax, [arrayB1+ 3*WORD]; This is also acceptable for previous instruction
+	MOV num4, ax; num4 has now added element 4 of the array
 
 	; Commencing operation to compute num1 + num2
-	mov eax, 0h; initialize eax with 0
-	mov ax, num1; initialize ax with num1
-	add ax, num2; adding num1 + num2
+	MOV eax, 0h; initialize eax with 0
+	MOV ax, num1; initialize ax with num1
+	ADD ax, num2; adding num1 + num2
 	
 	; Commencing operation to compute num3 + num4
-	mov ebx, 0h; initialize ebx with 0
-	mov bx, num3; initialize bx with num3
-	add bx, num4; adding num3 + num4
+	MOV ebx, 0h; initialize ebx with 0
+	MOV bx, num3; initialize bx with num3
+	ADD bx, num4; adding num3 + num4
 	
 	; Commencing operation to compute (num3 + num4) - (num1 + num2)
-	mov esi, 0h; initialize esi with 0
-	mov esi, ebx; initialize esi with (num3 + num4)
-	sub esi, eax; subtract esi with (num1 + num2)
+	MOV esi, 0h; initialize esi with 0
+	MOV esi, ebx; initialize esi with (num3 + num4)
+	SUB esi, eax; subtract esi with (num1 + num2)
 	
 	; Increment esi register by 1
-	inc esi
-	mov eax, 0; initialize eax to 0
-	mov eax, esi; compress esi into ax
+	INC esi
+	MOV eax, 0; initialize eax to 0
+	MOV eax, esi; compress esi into ax
 	
 	; Store esi result to total data label
-	mov total, ax
+	MOV total, ax
 	
 	invoke ExitProcess, 0 	
 			COMMENT @ 
