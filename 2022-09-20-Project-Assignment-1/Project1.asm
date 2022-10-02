@@ -58,19 +58,19 @@ main PROC
 						array.
 						@
 	;add ax, [arrayB1+WORD]; This is also acceptable for previous instruction
-	mov num2, ax; num1 has now added element 2 of the array
+	mov num2, ax; num2 has now added element 2 of the array
 	
 	mov eax, 0h; initialize eax with 0
 	mov ax, num3; initialize ax with num3 before addition
 	add ax, [arrayB1+ 4]; add array element 3
 	;add ax, [arrayB1+ 2*WORD]; This is also acceptable for previous instruction
-	mov num3, ax; num1 has now added element 3 of the array
+	mov num3, ax; num3 has now added element 3 of the array
 	
 	mov eax, 0h; initialize eax with 0
 	mov ax, num4; initialize ax with num4 before addition
 	add ax, [arrayB1+6]; add array element 4
 	;add ax, [arrayB1+ 3*WORD]; This is also acceptable for previous instruction
-	mov num4, ax; num1 has now added element 4 of the array
+	mov num4, ax; num4 has now added element 4 of the array
 
 	; Commencing operation to compute num1 + num2
 	mov eax, 0h; initialize eax with 0
