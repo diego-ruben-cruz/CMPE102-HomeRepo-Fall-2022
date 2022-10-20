@@ -26,7 +26,7 @@ ExitProcess PROTO, dwExitCode : dword
 			COMMENT @
 			PROTOTYPE, comment out if you are using Irvine32
 			ExitProcess PROTO = fn/procedure prototype to transfer/return execution to windows services
-			otherwise, windows can’t run any execution & windows crashes
+			otherwise, windows canï¿½t run any execution & windows crashes
 			dwExitCode is parameter
 			dword = data type
 			@
