@@ -167,13 +167,13 @@ main PROC ; Gets user input and calls other procedures. Main function, like in O
 		
 		; Compares input to 'y' to confirm if user wants to continue program
 		cmp stringIn, "y"
-		je top
+		je top; jumps to top marker
 
 		; Compares input to 'n' to confirm if user wants to end program
 		cmp stringIn, "n"
-		je closure
+		je closure; jumps to closure marker
 
-		jmp invalid; Jumps to invalid marker
+		jmp invalid; Jumps to invalid marker if none of the tests are passed
 
 	closure:
 		call endProgram; Refer to endProgram proc
