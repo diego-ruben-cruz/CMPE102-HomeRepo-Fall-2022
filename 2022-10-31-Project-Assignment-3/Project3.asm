@@ -39,69 +39,71 @@ stringIn BYTE 2 DUP(?) ; 2 Dup(?) denotes that it will initialize as "??"
 
 ; Messages for communicating from console
 strTitle BYTE "Medical Laser System",0 ; 0 denotes nullchar to end string	
+
+; Start Phase
 promptInit BYTE "Start? (y/n): ",0
 
+; Standby Phase
 strStandby BYTE "System Standby",0
 promptStandby BYTE "Standby bit (1/0): ",0
 
+; Ready Phase
 promptReady BYTE "Ready? (y/n): ",0
 strReady BYTE "System Ready",0
+strReadyFailed BYTE "System not ready. Standby bit was not set",0
 promptReadyBit BYTE "Ready bit (1/0): ",0
+
+; Fire phase
 promptFire BYTE "Fire? (y/n): ",0
 strFired BYTE "System Fired",0
-strUnfired BYTE "Unable to fire.",0
+strUnfired BYTE "Unable to fire. Ready bit was not set",0
 
-
-promptCont BYTE "Continue? (y/n): ",0
-
-
+; Program End Message
 strTerminate BYTE "--- System Shutdown ---",0
 
+; Input Error Message
 strInputError BYTE "Invalid Input. Try Again",0
 
 .code; to include assembly statement inside
 
 displayTitle PROC ; Prints the project title 
-	mov edx,OFFSET strTitle; Gets pointer to title string
-	call WriteString; Irvine operation to write string to console
-	call Crlf; Irvine operation to create line break on console
+	mov edx, OFFSET strTitle; Gets pointer/reference to title string
+	call WriteString; Irvine operation to write string stored in edx to console
 	call Crlf; Irvine operation to create line break on console
 	ret; Equivalent to return but for procedures outside of main
 displayTitle ENDP
 
 endProgram PROC ; Prints the termination message
-	mov edx,OFFSET strTerminate; Gets pointer to program termination string
-	call WriteString; Irvine operation to write string to console
+	mov edx, OFFSET strTerminate; Gets pointer/reference to program termination string
+	call WriteString; Irvine operation to write string stored in edx to console
 	call Crlf; Irvine operation to create line break on console
 	ret; Equivalent to return but for procedure outside of main
 endProgram ENDP
 
-initStart PROC
-	; Outputs initial prompt
-	; Accepts user input for a string
-	mov edx, OFFSET promptInit; Gets pointer for initial prompt string
-	call WriteString; Irvine operation to write string to console
+initStart PROC ; Outputs initial prompt
+	mov edx, OFFSET promptInit; Gets pointer/reference for initial prompt string
+	call WriteString; Irvine operation to write string stored in edx to console
 	ret; Equivalent to return but for procedure outside of main
 initStart ENDP
 
-ynStringInput PROC
+ynStringInput PROC ; Takes in input from console and stores it in the EAX register as storage demands
 	mov edx, OFFSET stringIn; Gets pointer for storing the string input
 	mov ecx, 2d; sets a limit for the string input to be 2 chars or less, including nullchar
 	call ReadString; Irvine operation to take string as input from console
 	ret; Equivalent to return but for procedure outside of main
 ynStringInput ENDP
 
-invalidInput PROC
-	mov edx, OFFSET strInputError; Gets marker to input error string
-	call WriteString; Irvine operation to write string to console
+invalidInput PROC ; Writes input error message to console
+	mov edx, OFFSET strInputError; Gets pointer/reference to input error string
+	call WriteString; Irvine operation to write string stored in edx to console
 	call Crlf; Irvine operation to create line break on console
-	ret
+	ret; Equivalent o return but for procedure outside of main
 invalidInput ENDP
 
 main PROC ; Gets user input and calls other procedures. Main function, like in Obj-Oriented Langs.
 	call displayTitle; Refer to displayTitle Proc
 	start:
-		; fetches input string from user
+		; initializes with start prompt and collects input from user
 		call Crlf; Irvine operation to create line break on console
 		call initStart; Refer to initStart procedure
 		call ynStringInput; Refer to ynStringInput procedure
@@ -116,24 +118,24 @@ main PROC ; Gets user input and calls other procedures. Main function, like in O
 
 	standby:
 		call Crlf; Irvine operation to create line break on console
-		mov edx, OFFSET strStandby; Gets pointer to standby string
-		call WriteString; Irvine operation to write string stored in edx
+		mov edx, OFFSET strStandby; Gets pointer/reference to standby string
+		call WriteString; Irvine operation to write string stored in edx to console
 		call Crlf; Irvine operation to create line break on console
-		mov edx, OFFSET promptStandby; Gets pointer to standby prompt string
-		call WriteString; Irvine operation to write string stored in edx
-		call ReadInt; Irvine operation to intake int input in eax
+		mov edx, OFFSET promptStandby; Gets pointer/reference to standby prompt string
+		call WriteString; Irvine operation to write string stored in edx to console
+		call ReadInt; Reads integer input from console and stores it in EAX register
 
-		; Compares input to 0, jumps to standby if equal.
+		; Compares input to 0, jumps to standby if equal
 		cmp ax, 0
-		je standby
+		je standbyGreenlight; jump to standbyGreenlight marker
 
 		; Compares input to 1, jumps to standbyGreenlight if equal
 		cmp ax, 1
-		je standbyGreenlight
+		je standbyGreenlight; jump to standbyGreenlight marker
 
 		; If neither comparison is successful, it calls an error message and repeats the process
-		call invalidInput
-		jmp standby
+		call invalidInput; Refer to invalidInput proc
+		jmp standby; jumps back to standby marker
 
 	standbyGreenlight:
 		mov intIn, al; takes int input and stores it in intIn var
@@ -143,14 +145,15 @@ main PROC ; Gets user input and calls other procedures. Main function, like in O
 		jmp ready; Begins ready phase
 		
 	ready:
+		; writes a prompt to determine 
 		call Crlf; Irvine operation to insert line break in console
-		mov edx, OFFSET promptReady; Gets pointer for initial prompt string
-		call WriteString; Irvine operation to write string to console
+		mov edx, OFFSET promptReady; Gets pointer/reference for initial prompt string
+		call WriteString; Irvine operation to write string stored in edx to console
 		call ynStringInput; refer to ynStringInput procedure
 		
 		; Compares input to 'y' to confirm if user wants to continue into readyGreenLight phase
 		cmp stringIn, "y"
-		je readyGreenlight; jumps to top marker
+		je readyGreenlight; jumps to readyGreenLight marker
 
 		; Compares input to 'n' to confirm if user wants to rollback into standby phase
 		cmp stringIn, "n"
@@ -161,36 +164,49 @@ main PROC ; Gets user input and calls other procedures. Main function, like in O
 		jmp ready
  
 	readyGreenlight:
-		call Crlf; Irvine operation to insert line break in console
-		mov edx, OFFSET strReady
-		call Writestring
-		call Crlf
-		mov edx, OFFSET promptReadyBit
-		call WriteString
-		call ReadInt
+		; Compares input stored variable to see if MSB is clear
+		cmp intIn, 00000000b
+		je readyFailed; Jumps to readyFailed marker because MSB was not set
+
+		; Writes ready string to console
+		mov edx, OFFSET strReady; Gets pointer/reference for ready string
+		call WriteString; Irvine operation to write string stored in edx to console
+		call Crlf; Irvine operation to create line break on console
+
+		; Writes ready prompt string to console and collects input from user
+		mov edx, OFFSET promptReadyBit; Gets pointer/reference to ready prompt string
+		call WriteString; Irvine operation to write string stored in edx to console
+		call ReadInt; Reads integer input from console and stores it in EAX register
 
 		; Compares input to 0, then jumps to fire if it equals 0
 		cmp ax, 0
-		je fire
+		je fire; Jumps to fire marker
 
 		; Compares input to 1, then jumps to fire if it equals 1
 		cmp ax, 1
-		je fire
+		je fire; Jumps to fire marker
 
 		; If neither comparison is successful, it calls an error message and repeats the process
 		call invalidInput
-		jmp readyGreenlight
+		jmp readyGreenlight; Jumps to ReadyGreenlight to repeat the process.
+		
+	readyFailed:
+		; Writes a readystate failed message because the standby bit was not set.
+		mov edx, OFFSET strReadyFailed; Gets pointer/reference to failed readystate string
+		call WriteString; Irvine operation to write string stored in edx to console
+		jmp standby; returns to standby marker
 
 	fire:
+		; Initializes intIn variable with MSB set because if user reaches this marker,
+		; it is already understood that they already set the standby bit.
 		mov intIn, 10000000b
-		add intIn, al
-		mov eax, 0
-		mov edx, 0
+		add intIn, al; Adds readyGreenlight int input to stored variable
+		mov eax, 0; Cleanup for ready phase
+		mov edx, 0; Cleanup for ready phase
 		
-		call Crlf
-		mov edx, OFFSET promptFire; Gets pointer for initial prompt string
-		call WriteString; Irvine operation to write string to console
-		call ynStringInput
+		mov edx, OFFSET promptFire; Gets pointer/reference for initial prompt string
+		call WriteString; Irvine operation to write string stored in edx to console
+		call ynStringInput; Refer to ynStringInput proc
 
 		; Compares input to 'y' to confirm if user wants to fire laser
 		cmp stringIn, "y"
@@ -198,29 +214,34 @@ main PROC ; Gets user input and calls other procedures. Main function, like in O
 
 		; Compares input to 'n' to confirm if user wants to go back to the start
 		cmp stringIn, "n"
-		je start; jumps back to start marker
+		je start; jumps to start marker
 
+		; If neither comparison is successful, it calls an invalid input and repeats the process
 		call invalidInput
-		jmp fire
+		jmp fire; jumps back to fire marker
 		
 	fireGreenlight:
+		; Compares intIn var to see if MSB and LSB are set
 		cmp intIn, 10000001b
-		je fireSuccess
+		je fireSuccess; Jumps to fireSuccess marker
 
+		; Compares intIn var to see if only MSB is set
 		cmp intIn, 10000000b
-		je fireFailed
+		je fireFailed; Jumps to fireFailed marker
 
 	fireSuccess:
-		call Crlf
-		mov edx, OFFSET strFired
-		call WriteString
-		jmp fire
+		; Writes fire success message, then returns to firing prompt
+		mov edx, OFFSET strFired; Gets pointer/reference to fired string
+		call WriteString; Irvine operation to write string stored in edx to console
+		call Crlf; Irvine operation to create line break on console
+		jmp fire; jumps to fire phase
 
 	fireFailed:
-		call Crlf
-		mov edx, OFFSET strUnfired
-		call WriteString
-		jmp readyGreenlight
+		; Writes fire failed message, then returns to readyGreenlight to prompt ready bit
+		mov edx, OFFSET strUnfired; Gets pointer/reference to unfired string
+		call WriteString; Irvine operation to write string stored in edx to console
+		call Crlf; Irvine operation to create line break on console
+		jmp readyGreenlight; jumps to readyGreenlight phase
 	
 	closure:
 		call endProgram; Refer to endProgram proc
