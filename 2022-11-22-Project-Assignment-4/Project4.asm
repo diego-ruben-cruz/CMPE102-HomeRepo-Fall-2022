@@ -1,7 +1,8 @@
 ;for file header on top of the file
 COMMENT @ 
 Description:     
-    Insert Program desc here
+    Displays stack addresses and 32-bit values which are 
+    pushed on the stack when the procedures are called.
 
 Name: Diego Cruz
 Project: 04
@@ -60,34 +61,16 @@ ENDM
 runLevelOne PROC
     displayText strTitle,1
     displayText strLineInsert,1
+    ; push values on the stack
     call runLevelTwo
-    ; Can insert the meat of the program here
     ret
 runLevelOne ENDP
 
 runLevelTwo PROC
-    ; Can insert the meat of the program here
+    ; Insert the logic statements meat of the program here
     displayText strLineInsert,1
     ret
 runLevelTwo ENDP
-
-; showArray PROC ; Displays array contents on the console
-; 	mov ecx, LENGTHOF arrayDW; initializes counter with length of arrayB2
-; 	mov edi, OFFSET arrayDW; Gets pointer to arrayB2
-; 	mov eax, 0; initializes eax to 0 for cleanup purposes
-; 	L1:
-; 		; Iterates through ArrayB2 and prints out the content
-; 		add al, [edi]; fetches num from arrayB2
-; 		add edi, TYPE arrayDW; point to next num in arrayB2
-; 		call WriteHex; Writes out the number in al in hexadecimal form
-; 		mov edx, OFFSET strHexAppend; Gets pointer to H string to be appended
-; 		call WriteString; Irvine operation to write string to console
-; 		call Crlf; Creates linebreak for next number
-; 		mov al, 0; initializes al to 0 for next loop iteration
-; 		loop L1 
-
-; 	ret; Equivalent to return but for procedure outside of main
-; showArray ENDP
 
 main PROC ; Gets user input and calls other procedures. Main function, like in Obj-Oriented Langs.
     ; Insert your code here
