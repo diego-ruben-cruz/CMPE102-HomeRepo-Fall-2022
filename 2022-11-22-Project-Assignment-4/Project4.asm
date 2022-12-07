@@ -141,7 +141,7 @@ runLevelTwo PROC    ; Iterates through the stack and prints out the effective me
     ; 4h
     displayText strAddress
     mov eax, esp
-    call WritwHex
+    call WriteHex
     displayText strHexAppend
     displayText strArrowAppend
     displayText strContent

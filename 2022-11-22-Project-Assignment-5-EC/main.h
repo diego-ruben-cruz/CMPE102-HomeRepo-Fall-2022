@@ -6,14 +6,16 @@
 
 struct salesRecord
 {
-    char month[MON_SIZE];
+    char *month[MON_SIZE];
     double amount;
-}
+};
 
 void
 printTitle(void);
 
 extern "C"
 {
-    int getAmount(char *prompt) void writeFile(struct salesRecord *sales);
+    int getAmount(char *prompt);
+    void writeFile(struct salesRecord *sales);
+    // void show(struct salesrecord *sales);
 }

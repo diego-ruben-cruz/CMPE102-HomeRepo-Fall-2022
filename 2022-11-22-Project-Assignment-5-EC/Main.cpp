@@ -74,7 +74,7 @@ void readFile(struct salesRecord *sales)
             {
                 if (j == 0)
                 {
-                    sales[i].month = substr;
+                    strcpy(sales[i].month, substr);
                     j++;
                 }
                 else
