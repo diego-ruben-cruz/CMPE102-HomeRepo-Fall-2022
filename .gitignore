@@ -31,3 +31,4 @@
 *.json
 *.sqlite
 .vs/2022-02-Fall-CMPE102/v17/.suo
+*.ipch
