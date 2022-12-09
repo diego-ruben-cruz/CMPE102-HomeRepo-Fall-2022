@@ -82,10 +82,16 @@ displayLine MACRO text  ; Macro to write text with a newline included to console
 ENDM
 
 .data; below declare data label
-fetchMonth BYTE 4 dup(?); Stores month from array into local variable
+; Variables go here
+fetchMonth BYTE 4 dup(?); Stores month from array or input into local variable
+                        ; 4th char is reserved for nullchar, only 3 chars allowed.
 fetchAmount DWORD ?; Stores amount from array into local variable 
+
+; Collections go here
 recordArray QWORD ARR_SIZE dup(0); Internal-use array for possible testing in main method
 
+; Strings go here
+strInputError BYTE "Invalid Input. Try Again",0
 
 .code; to include assembly statement inside
 
@@ -176,10 +182,169 @@ lo PROC c
 lo ENDP
 
 view PROC c
+        printText "Please enter a month to view: "; Prompt user to enter month 
+        mov edx, OFFSET fetchMonth; Fetches pointer to fetchMonth
+        mov ecx, MON_SIZE; Allows for 3 characters and nullchar in input for a total of 4
+        call ReadString; Irvine32 operation to take in a string from the console
+
+        ; Compares input to see if it matches any of the months, 
+        ; otherwise goes to inputError marker
+        cmp fetchMonth, "jan"
+        je search
+
+        cmp fetchMonth, "feb"
+        je search
+
+        cmp fetchMonth, "mar"
+        je search
+
+        cmp fetchMonth, "apr"
+        je search
+
+        cmp fetchMonth, "may"
+        je search
+
+        cmp fetchMonth, "jun"
+        je search
+
+        cmp fetchMonth, "jul"
+        je search
+
+        cmp fetchMonth, "aug"
+        je search
+
+        cmp fetchMonth, "sep"
+        je search
+
+        cmp fetchMonth, "oct"
+        je search
+
+        cmp fetchMonth, "nov"
+        je search
+
+        cmp fetchMonth, "dec"
+        je search
+
+        jmp inputError; jumps over to inputError 
+
+    search:
+        mov ecx, ARR_SIZE; Initializes counter to array size
+        mov edi, OFFSET recordArray ; Not sure if this is proper, or if we should
+                                    ; use an address parameter like in show PROC
+    L1:
+        .IF fetchMonth = [edi]  ; Compares fetchMonth to value in array
+                                ; If the same, then gets the amount and prints it out
+            add edi, DWORD; Gets address pointer to amount value
+            mov eax, [edi]; Fetches amount from structure and stores in eax
+        .ENDIF
+        add edi, QWORD; Moves on to next salesRecord structure stored in array
+        Loop L1
+
+        printText "The sales amount for "; prints out message for certain sales month
+        displayText fetchMonth
+        printText ": $"
+        call WriteDec; Irvine32 operation to write decimal to console
+        call Crlf; Irvine32 operation to linebreak
+        jmp endProc; Refer to endProc marker
+
+    inputError:
+        call invalidInput; Refer to invalidInput PROC
+
+    endProc:
+    mov edx, 0
+    mov ecx, 0
+    mov eax, 0
+    mov edi, 0
+
     ret
 view ENDP
 
 edit PROC c
+     printText "Please enter a month to edit: "; prompt user to enter month
+        mov edx, OFFSET fetchMonth; Fetches pointer to fetchMonth variable
+        mov ecx, MON_SIZE; Allows for 3 characters and nullchar in input for a total of 4
+        call ReadString; Irvine32 operation that takes in a string from the console
+
+        ; Compares input to see if it matches any of the months, 
+        ; otherwise goes to inputError marker
+        cmp fetchMonth, "jan"
+        je search
+
+        cmp fetchMonth, "feb"
+        je search
+
+        cmp fetchMonth, "mar"
+        je search
+
+        cmp fetchMonth, "apr"
+        je search
+
+        cmp fetchMonth, "may"
+        je search
+
+        cmp fetchMonth, "jun"
+        je search
+
+        cmp fetchMonth, "jul"
+        je search
+
+        cmp fetchMonth, "aug"
+        je search
+
+        cmp fetchMonth, "sep"
+        je search
+
+        cmp fetchMonth, "oct"
+        je search
+
+        cmp fetchMonth, "nov"
+        je search
+
+        cmp fetchMonth, "dec"
+        je search
+
+        jmp inputError
+
+    successfulMonth:
+        printText "Please enter the new amount: "; prompt user to enter new amount
+        call WriteDec; Irvine32 operation to take in a decimal from the command line
+        jnc search; jumps to search if the input was valid
+
+        jmp inputError; jumps to inputError if the WriteDec input was invalid
+
+    search:
+        mov fetchAmount, eax; Moves amount input from eax to fetchAmount
+        mov ecx, ARR_SIZE; Initializes counter to size of array
+        mov edi, OFFSET recordArray ; Not sure if this is proper, or if we should
+                                    ; use an address parameter like in show PROC
+    L1:
+        .IF fetchMonth = [edi]  ; Compares fetchMonth to value in array
+                                ; If the same, then gets the amount and prints it out
+            add edi, DWORD; Gets address pointer to amount value
+            mov [edi], fetchAmount; Replaces location in edi with what is in fetchAmount
+            jmp editSuccess; Refer to editSuccess marker
+        .ENDIF
+        add edi, QWORD; Moves on to next salesRecord structure stored in array
+        Loop L1
+
+    editSuccess:
+        printText "New amount updated for "; prints out message for certain sales month
+        displayText fetchMonth
+        printText ": $"
+        call WriteDec; Irvine32 operation to write decimal to console
+        call Crlf; Irvine32 operation to linebreak
+        jmp endProc; ends the procedure
+
+    inputError:
+        call invalidInput
+        jmp endProc
+
+    endProc:
+    mov edx, 0
+    mov ecx, 0
+    mov eax, 0
+    mov edi, 0
+    
     ret
 edit ENDP
 
@@ -203,6 +368,13 @@ total PROC c
         mov eax, 0
     ret
 total ENDP
+
+invalidInput PROC ; Writes input error message to console
+	mov edx, OFFSET strInputError; Gets pointer/reference to input error string
+	call WriteString; Irvine operation to write string stored in edx to console
+	call Crlf; Irvine operation to create line break on console
+	ret; Equivalent o return but for procedure outside of main
+invalidInput ENDP
 
 main PROC ; Gets user input and calls other procedures. Main function, like in Obj-Oriented Langs.
     invoke ExitProcess, 0 ; to return execution to windows services otherwise prog crashes
