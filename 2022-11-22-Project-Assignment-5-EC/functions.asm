@@ -92,6 +92,19 @@ recordArray QWORD ARR_SIZE dup(0); Internal-use array for possible testing in ma
 
 ; Strings go here
 strInputError BYTE "Invalid Input. Try Again",0
+monthJan BYTE "jan",0
+monthFeb BYTE "feb",0
+monthMar BYTE "mar",0
+monthApr BYTE "apr",0
+monthMay BYTE "may",0
+monthJun BYTE "jun",0
+monthJul BYTE "jul",0
+monthAug BYTE "aug",0
+monthSep BYTE "sep",0
+monthOct BYTE "oct",0
+monthNov BYTE "nov",0
+monthDec BYTE "dec",0
+
 
 .code; to include assembly statement inside
 
@@ -189,40 +202,40 @@ view PROC c
 
         ; Compares input to see if it matches any of the months, 
         ; otherwise goes to inputError marker
-        cmp fetchMonth, "jan"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthJan
         je search
 
-        cmp fetchMonth, "feb"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthFeb
         je search
 
-        cmp fetchMonth, "mar"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthMar
         je search
 
-        cmp fetchMonth, "apr"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthApr
         je search
 
-        cmp fetchMonth, "may"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthMay
         je search
 
-        cmp fetchMonth, "jun"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthJun
         je search
 
-        cmp fetchMonth, "jul"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthJul
         je search
 
-        cmp fetchMonth, "aug"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthAug
         je search
 
-        cmp fetchMonth, "sep"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthSep
         je search
 
-        cmp fetchMonth, "oct"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthOct
         je search
 
-        cmp fetchMonth, "nov"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthNov
         je search
 
-        cmp fetchMonth, "dec"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthDec
         je search
 
         jmp inputError; jumps over to inputError 
@@ -232,13 +245,15 @@ view PROC c
         mov edi, OFFSET recordArray ; Not sure if this is proper, or if we should
                                     ; use an address parameter like in show PROC
     L1:
-        .IF fetchMonth = [edi]  ; Compares fetchMonth to value in array
-                                ; If the same, then gets the amount and prints it out
-            add edi, DWORD; Gets address pointer to amount value
-            mov eax, [edi]; Fetches amount from structure and stores in eax
-        .ENDIF
+        INVOKE Str_compare, ADDR fetchMonth, edi
+        je viewSuccess         ; If the same, then gets the amount and prints it out
+
         add edi, QWORD; Moves on to next salesRecord structure stored in array
         Loop L1
+    
+    viewSuccess:
+        add edi, DWORD; Gets address pointer to amount value
+        mov eax, [edi]; Fetches amount from structure and stores in eax
 
         printText "The sales amount for "; prints out message for certain sales month
         displayText fetchMonth
@@ -267,43 +282,43 @@ edit PROC c
 
         ; Compares input to see if it matches any of the months, 
         ; otherwise goes to inputError marker
-        cmp fetchMonth, "jan"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthJan
         je search
 
-        cmp fetchMonth, "feb"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthFeb
         je search
 
-        cmp fetchMonth, "mar"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthMar
         je search
 
-        cmp fetchMonth, "apr"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthApr
         je search
 
-        cmp fetchMonth, "may"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthMay
         je search
 
-        cmp fetchMonth, "jun"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthJun
         je search
 
-        cmp fetchMonth, "jul"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthJul
         je search
 
-        cmp fetchMonth, "aug"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthAug
         je search
 
-        cmp fetchMonth, "sep"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthSep
         je search
 
-        cmp fetchMonth, "oct"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthOct
         je search
 
-        cmp fetchMonth, "nov"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthNov
         je search
 
-        cmp fetchMonth, "dec"
+        INVOKE Str_compare, ADDR fetchMonth, ADDR monthDec
         je search
 
-        jmp inputError
+        jmp inputError; jumps over to inputError 
 
     successfulMonth:
         printText "Please enter the new amount: "; prompt user to enter new amount
@@ -318,16 +333,16 @@ edit PROC c
         mov edi, OFFSET recordArray ; Not sure if this is proper, or if we should
                                     ; use an address parameter like in show PROC
     L1:
-        .IF fetchMonth = [edi]  ; Compares fetchMonth to value in array
-                                ; If the same, then gets the amount and prints it out
-            add edi, DWORD; Gets address pointer to amount value
-            mov [edi], fetchAmount; Replaces location in edi with what is in fetchAmount
-            jmp editSuccess; Refer to editSuccess marker
-        .ENDIF
+        INVOKE Str_compare, ADDR fetchMonth, edi
+        je editSuccess
+
         add edi, QWORD; Moves on to next salesRecord structure stored in array
         Loop L1
 
     editSuccess:
+        add edi, DWORD; Gets address pointer to amount value
+        mov eax, fetchAmount
+        mov [edi], eax; Replaces location in edi with what is in fetchAmount
         printText "New amount updated for "; prints out message for certain sales month
         displayText fetchMonth
         printText ": $"
