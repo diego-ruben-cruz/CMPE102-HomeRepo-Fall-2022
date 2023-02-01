@@ -4,14 +4,8 @@ Home Repository for all x86 MASM Assembly projects for the CMPE 102 Fall 2022 co
 
 ## Details
 
-### Instructor:
+### Instructor: Loc Lam
 
-Loc Lam
+### Section: 01
 
-### Section:
-
-01
-
-### Dates and Times:
-
-TueThu 0900 - 1015
+### Dates and Times: TueThu 0900 - 1015
